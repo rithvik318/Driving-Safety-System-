@@ -1,0 +1,30 @@
+# Only what current code needs. pyarrow etc. are added when their modules are built.
+# Install in TWO steps (ultralytics must not pull in opencv-python, see requirements-nodeps.txt):
+#     pip install -r requirements.txt
+#     pip install --no-deps -r requirements-nodeps.txt
+
+python-dotenv>=1.0              # loads optional .env file into settings
+pytest>=8.0                     # test runner
+numpy>=1.26                     # arrays for frames and landmarks
+Pillow>=10.0                    # dataset audit: decode/verify images, dimensions + EXIF
+opencv-contrib-python>=4.8      # video I/O, solvePnP head pose, audit video metadata.
+                                # (contrib, not opencv-python: mediapipe depends on it and
+                                #  the two packages must not be installed together)
+mediapipe>=1.0.1,<2             # Face Landmarker (CPU). 1.0.x ships py3-none-win_amd64 wheels
+                                # that install on Python 3.13
+torch>=2.6                      # hand-state classifier. On Windows, PyPI ships a CPU build (fine for
+                                # Iris Xe laptops). For an NVIDIA GPU, install the CUDA build from pytorch.org.
+torchvision>=0.21               # MobileNetV3-Small + ImageNet weights (downloaded once, ~10 MB, on first training)
+matplotlib>=3.8                 # confusion-matrix plot
+pyarrow>=16                    # event dataset as Parquet (the event writer falls back to JSON Lines without it)
+
+# --- runtime dependencies of ultralytics (requirements-nodeps.txt), listed here so that
+# ultralytics itself can be installed with --no-deps. opencv-python is deliberately NOT listed:
+# opencv-contrib-python above provides the same cv2 module. nvidia-ml-py / ultralytics-platform
+# (GPU telemetry / hub client) are not needed for CPU inference.
+ultralytics-thop>=2.1.6         # model FLOPs helper imported by ultralytics
+pyyaml>=5.3.1
+requests>=2.23.0
+psutil>=5.8.0
+polars>=0.20.0
+cloudpickle>=3.1.1

@@ -1,0 +1,488 @@
+{
+  "schema_version": "1.0",
+  "description": "Physical-AI-Driving-Safety event record. One row per event (not per frame).",
+  "record_provenance": {
+    "data_source": {
+      "LOCAL_REAL": "captured by the team",
+      "PUBLIC": "public dataset",
+      "SYNTHETIC": "constructed test input",
+      "SYNTHETIC_COMBINATION": "real streams combined although they were NOT recorded together"
+    },
+    "observation_type": {
+      "OBSERVED": "event is a change in an observed signal",
+      "INFERRED": "event derived from inferred quantities"
+    },
+    "separation": "SYNTHETIC and SYNTHETIC_COMBINATION records are written to a separate dataset root and are rejected by the real-dataset writer."
+  },
+  "field_provenance": {
+    "METADATA": "recorder bookkeeping",
+    "OBSERVED": "measured directly",
+    "INFERRED": "derived from observations by tracker / rules"
+  },
+  "units": "Image-space pixels and seconds. No metres, physical speed, distance or TTC anywhere.",
+  "fields": [
+    {
+      "name": "schema_version",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "Event schema version."
+    },
+    {
+      "name": "event_id",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "Sequential id within a run: event_000001, event_000002, ... (deterministic)."
+    },
+    {
+      "name": "run_id",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "Identifier of the recording/processing run that produced the event."
+    },
+    {
+      "name": "session_id",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "Stream the event belongs to (e.g. the source video's file stem)."
+    },
+    {
+      "name": "source_file",
+      "type": "string",
+      "nullable": true,
+      "provenance": "METADATA",
+      "description": "Source file name (no directory), when the stream is a file."
+    },
+    {
+      "name": "camera",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "Which camera stream(s) the event is based on.",
+      "allowed": [
+        "front",
+        "driver",
+        "front+driver"
+      ]
+    },
+    {
+      "name": "data_source",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "LOCAL_REAL (our own captures) | PUBLIC | SYNTHETIC (constructed test inputs) | SYNTHETIC_COMBINATION (real streams combined although not recorded together). Synthetic records live in a separate dataset.",
+      "allowed": [
+        "LOCAL_REAL",
+        "PUBLIC",
+        "SYNTHETIC",
+        "SYNTHETIC_COMBINATION"
+      ]
+    },
+    {
+      "name": "observation_type",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "INFERRED when the event is derived from inferred quantities (all risk / hazard events); OBSERVED only for a DRIVER_STATE_CHANGE of the observed hand state.",
+      "allowed": [
+        "OBSERVED",
+        "INFERRED"
+      ]
+    },
+    {
+      "name": "timestamp",
+      "type": "float64",
+      "nullable": false,
+      "provenance": "OBSERVED",
+      "description": "Stream time of the event, seconds (video timestamps for files)."
+    },
+    {
+      "name": "frame_index",
+      "type": "int64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Index of the frame that produced the event, when known."
+    },
+    {
+      "name": "event_type",
+      "type": "string",
+      "nullable": false,
+      "provenance": "INFERRED",
+      "description": "Kind of event.",
+      "allowed": [
+        "RISK_ESCALATED",
+        "RISK_DEESCALATED",
+        "PERSISTENT_HAZARD",
+        "DRIVER_STATE_CHANGE"
+      ]
+    },
+    {
+      "name": "transition",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "FROM->TO for level and driver-state changes, e.g. SAFE->CAUTION."
+    },
+    {
+      "name": "previous_risk_level",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Risk level before a level change.",
+      "allowed": [
+        "SAFE",
+        "CAUTION",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    {
+      "name": "change_kind",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "For DRIVER_STATE_CHANGE: hand_state | driver_activity | drowsiness_level.",
+      "allowed": [
+        "hand_state",
+        "driver_activity",
+        "drowsiness_level"
+      ]
+    },
+    {
+      "name": "gps_lat",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Latitude from a real GPS source; null when unavailable. Never invented."
+    },
+    {
+      "name": "gps_lon",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Longitude from a real GPS source; null when unavailable. Never invented."
+    },
+    {
+      "name": "gps_source",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "GPS source name, or UNAVAILABLE."
+    },
+    {
+      "name": "gps_timestamp",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Time of the GPS fix used, seconds (same clock as timestamp)."
+    },
+    {
+      "name": "gps_accuracy_m",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Reported GPS accuracy in metres, when the source provides it."
+    },
+    {
+      "name": "risk_level",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Risk level after hysteresis (decision-support state, not validated).",
+      "allowed": [
+        "SAFE",
+        "CAUTION",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    {
+      "name": "raw_risk_score",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Rule-based prototype score 0-100 for this observation. Not a probability."
+    },
+    {
+      "name": "smoothed_risk_score",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Smoothed prototype score 0-100. Not a probability."
+    },
+    {
+      "name": "hazard_type",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Risk engine hazard type (NONE, APPROACHING_VEHICLE, ...)."
+    },
+    {
+      "name": "primary_track_id",
+      "type": "int64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Tracker id of the object driving the hazard (identity is inferred)."
+    },
+    {
+      "name": "image_width",
+      "type": "int64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Front-camera frame width in pixels."
+    },
+    {
+      "name": "image_height",
+      "type": "int64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Front-camera frame height in pixels."
+    },
+    {
+      "name": "hazard_class",
+      "type": "string",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Detector label of the primary object at the event time."
+    },
+    {
+      "name": "hazard_track_class",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Track-level label (most frequent detector label of the track)."
+    },
+    {
+      "name": "hazard_class_changes",
+      "type": "int64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Detector label changes observed on the primary track."
+    },
+    {
+      "name": "hazard_confidence",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Detector confidence of the primary object at the event time."
+    },
+    {
+      "name": "track_persistence_seconds",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "How long the primary track has been observed."
+    },
+    {
+      "name": "track_detection_count",
+      "type": "int64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Detections supporting the primary track."
+    },
+    {
+      "name": "center_x",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Primary object box centre x, pixels."
+    },
+    {
+      "name": "center_y",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Primary object box centre y, pixels."
+    },
+    {
+      "name": "bbox_width",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Primary object box width, pixels."
+    },
+    {
+      "name": "bbox_height",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Primary object box height, pixels."
+    },
+    {
+      "name": "bbox_area",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Primary object box area, pixels\u00b2."
+    },
+    {
+      "name": "velocity_x_pixels_per_second",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Image-space centre velocity x (not physical speed)."
+    },
+    {
+      "name": "velocity_y_pixels_per_second",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Image-space centre velocity y (not physical speed)."
+    },
+    {
+      "name": "area_change_rate",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Box area change, pixels\u00b2 per second (tracker, frame to frame)."
+    },
+    {
+      "name": "box_growth_per_second",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Risk-engine growth: slope of ln(box area) over ~1 s (relative approach signal, not distance)."
+    },
+    {
+      "name": "lateral_toward_center_fw_per_s",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Horizontal motion toward/across the central image band, frame-widths per second."
+    },
+    {
+      "name": "trajectory_overlap",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Reserved: overlap of the object's path with the vehicle's projected path. Always null until a calibrated path model exists."
+    },
+    {
+      "name": "hazard_persistence",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "How long this hazard (same hazard type and track) has been continuously reported, seconds."
+    },
+    {
+      "name": "driver_hand_state",
+      "type": "string",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Hand-state classifier output (BOTH_HANDS / ONE_HAND / NO_HANDS / UNKNOWN)."
+    },
+    {
+      "name": "driver_hand_confidence",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Hand-state classifier confidence."
+    },
+    {
+      "name": "driver_activity",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Inferred driver activity (NORMAL, HANDS_OFF_WHEEL, ...)."
+    },
+    {
+      "name": "drowsiness_level",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Temporal drowsiness level (prototype, not medically validated)."
+    },
+    {
+      "name": "drowsiness_score",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Temporal drowsiness score 0-1 (prototype)."
+    },
+    {
+      "name": "face_status",
+      "type": "string",
+      "nullable": true,
+      "provenance": "OBSERVED",
+      "description": "Driver face-landmark status for the frame."
+    },
+    {
+      "name": "risk_reason",
+      "type": "string",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Reason generated by the rule engine from structured factors (no LLM)."
+    },
+    {
+      "name": "risk_factors",
+      "type": "json",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Contributing factors [{name, points, source, detail, track_id}]."
+    },
+    {
+      "name": "risk_gates",
+      "type": "json",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Level caps applied by the risk engine."
+    },
+    {
+      "name": "evidence_quality",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "0-1 support of the evidence behind the risk result (not a probability)."
+    },
+    {
+      "name": "alarm_recommended",
+      "type": "bool",
+      "nullable": true,
+      "provenance": "INFERRED",
+      "description": "Risk engine recommendation (level >= configured alarm level)."
+    },
+    {
+      "name": "alarm_triggered",
+      "type": "bool",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "Whether an alarm was actually raised. Always false: no alarm output exists yet."
+    },
+    {
+      "name": "evidence_kind",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "description": "NONE | FRAME (single images) | CLIP (video clips).",
+      "allowed": [
+        "NONE",
+        "FRAME",
+        "CLIP"
+      ]
+    },
+    {
+      "name": "evidence_path",
+      "type": "string",
+      "nullable": true,
+      "provenance": "METADATA",
+      "description": "Evidence directory relative to the event dataset root: <run_id>/<event_id>."
+    },
+    {
+      "name": "evidence_files",
+      "type": "json",
+      "nullable": true,
+      "provenance": "METADATA",
+      "description": "Evidence files relative to the event dataset root."
+    },
+    {
+      "name": "notes",
+      "type": "json",
+      "nullable": true,
+      "provenance": "METADATA",
+      "description": "Provenance and limitation notes for this record."
+    }
+  ]
+}

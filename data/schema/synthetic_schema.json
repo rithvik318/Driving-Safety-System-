@@ -1,0 +1,654 @@
+{
+  "schema_version": "sim-1.0",
+  "description": "SYNTHETIC feature-level driving scenarios: one row per 10 Hz step of a constructed scenario. Not observations. Separate from the real event dataset (data/events/).",
+  "provenance_policy": "Every row is SYNTHETIC: data_source=SYNTHETIC, observation_type=SYNTHETIC, timestamp_source=SYNTHETIC, gps_source=SYNTHETIC, location_source=SYNTHETIC_REFERENCE. Inputs (boxes, driver signals, time, location) are constructed by the generator; engine outputs are computed by the existing, unmodified tracker / driver / risk / event code FROM those synthetic inputs and are therefore synthetic too. Rows are written only to data/simulated/ and never to the real dataset (data/events/). parent_real_event_id only references an existing LOCAL_REAL event used as a statistical reference; it does not make the row an observation.",
+  "statement": "Synthetic data does not replace real observations. It stress-tests the existing risk/event logic with controlled feature-level scenarios; it says nothing about how often these situations occur on real roads or whether the engine is correct on real driving.",
+  "field_provenance": {
+    "METADATA": "ids, labels and provenance markers",
+    "SYNTHETIC_INPUT": "constructed by the generator (time, location, boxes, labels, confidences, driver signals, design ground truth)",
+    "ENGINE_ON_SYNTHETIC": "computed by the existing, unmodified tracker / driver temporal logic / RiskEngine / EventRecorder from the synthetic inputs",
+    "VALIDATION": "expected qualitative behaviour vs the engine's actual output"
+  },
+  "requested_name_mapping": {
+    "object_id": "primary_track_id",
+    "approach_rate": "box_growth_per_second"
+  },
+  "units": "Image-space pixels and seconds. No metres, physical speed, distance or TTC.",
+  "fields": [
+    {
+      "name": "schema_version",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Simulated-dataset schema version.",
+      "allowed": [
+        "sim-1.0"
+      ]
+    },
+    {
+      "name": "event_id",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": true,
+      "description": "Sequential id within a run: event_000001, event_000002, ... (deterministic). SYNTHETIC dataset: row id sim_000001, sim_000002, ... (never an event_NNNNNN real id)."
+    },
+    {
+      "name": "synthetic_id",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Stable descriptive row id: SYN-<scenario>-v<variant>-s<step>."
+    },
+    {
+      "name": "run_id",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": true,
+      "description": "Identifier of the recording/processing run that produced the event. SYNTHETIC dataset: generator run id."
+    },
+    {
+      "name": "session_id",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": true,
+      "description": "Stream the event belongs to (e.g. the source video's file stem). SYNTHETIC dataset: scenario instance: <scenario>__v<variant>."
+    },
+    {
+      "name": "scenario_name",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Scenario name (one of the 12 designed scenarios)."
+    },
+    {
+      "name": "scenario_variant",
+      "type": "int64",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Variant index of the scenario (different seed-derived parameters)."
+    },
+    {
+      "name": "scenario_description",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "What the scenario constructs."
+    },
+    {
+      "name": "synthetic_generation_reason",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Why the scenario exists (what it stress-tests)."
+    },
+    {
+      "name": "parent_real_event_id",
+      "type": "string",
+      "nullable": true,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "LOCAL_REAL road event (event_NNNNNN in parent_real_run_id) used as a statistical reference for the constructed road object; null = synthetic-only parameters."
+    },
+    {
+      "name": "parent_real_driver_event_id",
+      "type": "string",
+      "nullable": true,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "LOCAL_REAL driver-camera event used as a reference for the constructed driver signals; null if none."
+    },
+    {
+      "name": "parent_real_run_id",
+      "type": "string",
+      "nullable": true,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Run id of the real dataset the parent ids belong to."
+    },
+    {
+      "name": "data_source",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": true,
+      "description": "LOCAL_REAL (our own captures) | PUBLIC | SYNTHETIC (constructed test inputs) | SYNTHETIC_COMBINATION (real streams combined although not recorded together). Synthetic records live in a separate dataset. SYNTHETIC dataset: always SYNTHETIC.",
+      "allowed": [
+        "SYNTHETIC"
+      ]
+    },
+    {
+      "name": "observation_type",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Always SYNTHETIC: nothing in this row was observed.",
+      "allowed": [
+        "SYNTHETIC"
+      ]
+    },
+    {
+      "name": "camera",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": true,
+      "description": "Which camera stream(s) the event is based on. SYNTHETIC dataset: virtual front+driver pair (no video exists).",
+      "allowed": [
+        "front+driver"
+      ]
+    },
+    {
+      "name": "timestamp",
+      "type": "float64",
+      "nullable": false,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Stream time of the event, seconds (video timestamps for files). SYNTHETIC dataset: seconds since the start of the scenario instance on a fixed synthetic cadence."
+    },
+    {
+      "name": "timestamp_source",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Always SYNTHETIC.",
+      "allowed": [
+        "SYNTHETIC"
+      ]
+    },
+    {
+      "name": "synthetic_datetime",
+      "type": "string",
+      "nullable": false,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": false,
+      "description": "ISO-8601 time on a synthetic clock (base_datetime + offsets). Not a capture time."
+    },
+    {
+      "name": "frame_index",
+      "type": "int64",
+      "nullable": false,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Index of the frame that produced the event, when known. SYNTHETIC dataset: step index within the scenario instance (no frames exist)."
+    },
+    {
+      "name": "gps_lat",
+      "type": "float64",
+      "nullable": false,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Latitude from a real GPS source; null when unavailable. Never invented. SYNTHETIC dataset: SYNTHETIC coordinate around a generic reference point; NOT a collection location."
+    },
+    {
+      "name": "gps_lon",
+      "type": "float64",
+      "nullable": false,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Longitude from a real GPS source; null when unavailable. Never invented. SYNTHETIC dataset: SYNTHETIC coordinate around a generic reference point; NOT a collection location."
+    },
+    {
+      "name": "gps_source",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": true,
+      "description": "GPS source name, or UNAVAILABLE. SYNTHETIC dataset: always SYNTHETIC.",
+      "allowed": [
+        "SYNTHETIC"
+      ]
+    },
+    {
+      "name": "location_source",
+      "type": "string",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": false,
+      "description": "Always SYNTHETIC_REFERENCE.",
+      "allowed": [
+        "SYNTHETIC_REFERENCE"
+      ]
+    },
+    {
+      "name": "driver_hand_state",
+      "type": "string",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Hand-state classifier output (BOTH_HANDS / ONE_HAND / NO_HANDS / UNKNOWN). SYNTHETIC dataset: scripted hand state fed to the existing driver temporal logic."
+    },
+    {
+      "name": "driver_hand_confidence",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Hand-state classifier confidence. SYNTHETIC dataset: scripted classifier confidence."
+    },
+    {
+      "name": "face_status",
+      "type": "string",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Driver face-landmark status for the frame. SYNTHETIC dataset: scripted face status."
+    },
+    {
+      "name": "head_yaw",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": false,
+      "description": "Scripted head yaw, degrees (relative head-pose signal)."
+    },
+    {
+      "name": "head_pitch",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": false,
+      "description": "Scripted head pitch, degrees (> 0 = down)."
+    },
+    {
+      "name": "eye_closure_ratio",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "Share of the rolling window with eyes closed (existing EyeClosureTracker on scripted eye openness)."
+    },
+    {
+      "name": "eye_closed_duration",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "Current continuous eye closure, seconds (existing EyeClosureTracker)."
+    },
+    {
+      "name": "drowsiness_score",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Temporal drowsiness score 0-1 (prototype). SYNTHETIC dataset: existing drowsiness scoring on scripted eye signals."
+    },
+    {
+      "name": "drowsiness_level",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Temporal drowsiness level (prototype, not medically validated). SYNTHETIC dataset: existing drowsiness scoring on scripted eye signals."
+    },
+    {
+      "name": "driver_activity",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Inferred driver activity (NORMAL, HANDS_OFF_WHEEL, ...). SYNTHETIC dataset: existing activity inference (NO_HANDS >= 2 s -> HANDS_OFF_WHEEL)."
+    },
+    {
+      "name": "distraction_duration",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "Continuous INFERRED manual-distraction time, seconds (existing driver logic); 0.0 if none."
+    },
+    {
+      "name": "manual_state_duration",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "Continuous time in the current hand/manual state, seconds (existing StateDurationTracker)."
+    },
+    {
+      "name": "head_away_duration",
+      "type": "float64",
+      "nullable": false,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "Continuous time the head pose has been 'away' by the risk rules (existing HeadAwayTimer), seconds."
+    },
+    {
+      "name": "image_width",
+      "type": "int64",
+      "nullable": false,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Front-camera frame width in pixels. SYNTHETIC dataset: virtual frame width."
+    },
+    {
+      "name": "image_height",
+      "type": "int64",
+      "nullable": false,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Front-camera frame height in pixels. SYNTHETIC dataset: virtual frame height."
+    },
+    {
+      "name": "hazard_class",
+      "type": "string",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Detector label of the primary object at the event time. SYNTHETIC dataset: detector label of the constructed detection (may flicker by design); null when the object was not detected this step."
+    },
+    {
+      "name": "hazard_confidence",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Detector confidence of the primary object at the event time. SYNTHETIC dataset: constructed detector confidence."
+    },
+    {
+      "name": "center_x",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Primary object box centre x, pixels. SYNTHETIC dataset: constructed box."
+    },
+    {
+      "name": "center_y",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Primary object box centre y, pixels. SYNTHETIC dataset: constructed box."
+    },
+    {
+      "name": "bbox_width",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Primary object box width, pixels. SYNTHETIC dataset: constructed box."
+    },
+    {
+      "name": "bbox_height",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Primary object box height, pixels. SYNTHETIC dataset: constructed box."
+    },
+    {
+      "name": "bbox_area",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Primary object box area, pixels\u00b2. SYNTHETIC dataset: constructed box."
+    },
+    {
+      "name": "primary_track_id",
+      "type": "int64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Tracker id of the object driving the hazard (identity is inferred). SYNTHETIC dataset: tracker id of the scenario's road object (requested name: object_id)."
+    },
+    {
+      "name": "hazard_track_class",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Track-level label (most frequent detector label of the track). SYNTHETIC dataset: track-level label from the existing IoUTracker."
+    },
+    {
+      "name": "track_persistence_seconds",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "How long the primary track has been observed. SYNTHETIC dataset: existing IoUTracker."
+    },
+    {
+      "name": "box_growth_per_second",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Risk-engine growth: slope of ln(box area) over ~1 s (relative approach signal, not distance). SYNTHETIC dataset: requested name: approach_rate. Existing risk-engine feature (slope of ln area); null until enough history."
+    },
+    {
+      "name": "lateral_toward_center_fw_per_s",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Horizontal motion toward/across the central image band, frame-widths per second. SYNTHETIC dataset: existing risk-engine feature."
+    },
+    {
+      "name": "trajectory_overlap",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "SYNTHETIC_INPUT",
+      "reused_from_event_schema": true,
+      "description": "Reserved: overlap of the object's path with the vehicle's projected path. Always null until a calibrated path model exists. SYNTHETIC dataset: DESIGN GROUND TRUTH: fraction of the constructed box width inside the central image band (|x-0.5| <= 0.2 of the frame width). Image-space only, not a calibrated vehicle path, and NOT an input to the risk engine. (Always null in the real dataset.)"
+    },
+    {
+      "name": "hazard_persistence",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "How long this hazard (same hazard type and track) has been continuously reported, seconds. SYNTHETIC dataset: continuous time the risk engine has reported the object as a qualifying road hazard, seconds; 0.0 when not reported."
+    },
+    {
+      "name": "risk_level",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Risk level after hysteresis (decision-support state, not validated). SYNTHETIC dataset: existing RiskEngine after hysteresis.",
+      "allowed": [
+        "SAFE",
+        "CAUTION",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    {
+      "name": "raw_risk_level",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "Existing RiskEngine level for this step alone (after gates, before hysteresis).",
+      "allowed": [
+        "SAFE",
+        "CAUTION",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    {
+      "name": "raw_risk_score",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Rule-based prototype score 0-100 for this observation. Not a probability."
+    },
+    {
+      "name": "smoothed_risk_score",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Smoothed prototype score 0-100. Not a probability."
+    },
+    {
+      "name": "risk_score",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "RiskAssessment.risk_score (= smoothed_risk_score): rule-based prototype score 0-100, not a probability."
+    },
+    {
+      "name": "hazard_type",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Risk engine hazard type (NONE, APPROACHING_VEHICLE, ...)."
+    },
+    {
+      "name": "risk_reason",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Reason generated by the rule engine from structured factors (no LLM)."
+    },
+    {
+      "name": "risk_factors",
+      "type": "json",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Contributing factors [{name, points, source, detail, track_id}]."
+    },
+    {
+      "name": "risk_gates",
+      "type": "json",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Level caps applied by the risk engine."
+    },
+    {
+      "name": "evidence_quality",
+      "type": "float64",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "0-1 support of the evidence behind the risk result (not a probability)."
+    },
+    {
+      "name": "alarm_recommended",
+      "type": "bool",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "Risk engine recommendation (level >= configured alarm level)."
+    },
+    {
+      "name": "alarm_triggered",
+      "type": "bool",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": true,
+      "description": "Whether an alarm was actually raised. Always false: no alarm output exists yet. SYNTHETIC dataset: always false: no alarm output exists."
+    },
+    {
+      "name": "event_type",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "Event the existing EventRecorder emitted at this step (first if several); null if none.",
+      "allowed": [
+        "RISK_ESCALATED",
+        "RISK_DEESCALATED",
+        "PERSISTENT_HAZARD",
+        "DRIVER_STATE_CHANGE"
+      ]
+    },
+    {
+      "name": "transition",
+      "type": "string",
+      "nullable": true,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": true,
+      "description": "FROM->TO for level and driver-state changes, e.g. SAFE->CAUTION. SYNTHETIC dataset: transition of that event."
+    },
+    {
+      "name": "events_emitted",
+      "type": "json",
+      "nullable": false,
+      "provenance": "ENGINE_ON_SYNTHETIC",
+      "reused_from_event_schema": false,
+      "description": "All events the existing EventRecorder emitted at this step: [\"TYPE FROM->TO\", ...]."
+    },
+    {
+      "name": "expected_behavior",
+      "type": "string",
+      "nullable": false,
+      "provenance": "VALIDATION",
+      "reused_from_event_schema": false,
+      "description": "Expected qualitative behaviour of the scenario instance (written before running the engine)."
+    },
+    {
+      "name": "expected_peak_levels",
+      "type": "json",
+      "nullable": false,
+      "provenance": "VALIDATION",
+      "reused_from_event_schema": false,
+      "description": "Acceptable peak risk levels for the scenario instance."
+    },
+    {
+      "name": "actual_risk_level",
+      "type": "string",
+      "nullable": true,
+      "provenance": "VALIDATION",
+      "reused_from_event_schema": false,
+      "description": "Risk level the existing engine produced at this step (= risk_level).",
+      "allowed": [
+        "SAFE",
+        "CAUTION",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    {
+      "name": "instance_peak_risk_level",
+      "type": "string",
+      "nullable": false,
+      "provenance": "VALIDATION",
+      "reused_from_event_schema": false,
+      "description": "Highest risk level the engine produced in this scenario instance.",
+      "allowed": [
+        "SAFE",
+        "CAUTION",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    {
+      "name": "expectation_met",
+      "type": "bool",
+      "nullable": false,
+      "provenance": "VALIDATION",
+      "reused_from_event_schema": false,
+      "description": "Whether the instance's actual behaviour matched the expectation (same value on every row of the instance)."
+    },
+    {
+      "name": "notes",
+      "type": "json",
+      "nullable": false,
+      "provenance": "METADATA",
+      "reused_from_event_schema": true,
+      "description": "Provenance and limitation notes for this record. SYNTHETIC dataset: provenance notes."
+    }
+  ]
+}

@@ -1,0 +1,1047 @@
+{
+  "dataset": "data/simulated",
+  "data_source": "SYNTHETIC",
+  "generation_timestamp": "2026-09-27T00:07:12+00:00",
+  "generator_version": "1.0.0",
+  "schema_version": "sim-1.0",
+  "random_seed": 42,
+  "total_records": 1441,
+  "scenario_counts": {
+    "attentive_static_vehicle": 110,
+    "attentive_approaching_vehicle": 134,
+    "one_hand_approaching_vehicle": 117,
+    "hands_off_approaching_vehicle": 111,
+    "drowsy_approaching_vehicle": 125,
+    "attentive_pedestrian_crossing": 114,
+    "distracted_pedestrian_crossing": 132,
+    "distracted_dog_entering_path": 130,
+    "stationary_vehicle_false_positive": 112,
+    "distant_pedestrian_false_positive": 121,
+    "persistent_low_risk_hazard": 124,
+    "escalating_hazard": 111
+  },
+  "scenario_instances": 24,
+  "variants_per_scenario": 2,
+  "cadence_hz": 10.0,
+  "parent_real_event_count": 17,
+  "parent_real_event_ids": [
+    "event_000003",
+    "event_000004",
+    "event_000005",
+    "event_000013",
+    "event_000018",
+    "event_000019",
+    "event_000021",
+    "event_000032",
+    "event_000035",
+    "event_000037",
+    "event_000038",
+    "event_000039",
+    "event_000042",
+    "event_000052",
+    "event_000054",
+    "event_000059",
+    "event_000063"
+  ],
+  "parent_linked_records": 1330,
+  "synthetic_only_records_count": 111,
+  "fields_generated": [
+    "schema_version",
+    "event_id",
+    "synthetic_id",
+    "run_id",
+    "session_id",
+    "scenario_name",
+    "scenario_variant",
+    "scenario_description",
+    "synthetic_generation_reason",
+    "parent_real_event_id",
+    "parent_real_driver_event_id",
+    "parent_real_run_id",
+    "data_source",
+    "observation_type",
+    "camera",
+    "timestamp",
+    "timestamp_source",
+    "synthetic_datetime",
+    "frame_index",
+    "gps_lat",
+    "gps_lon",
+    "gps_source",
+    "location_source",
+    "driver_hand_state",
+    "driver_hand_confidence",
+    "face_status",
+    "head_yaw",
+    "head_pitch",
+    "eye_closure_ratio",
+    "eye_closed_duration",
+    "drowsiness_score",
+    "drowsiness_level",
+    "driver_activity",
+    "distraction_duration",
+    "manual_state_duration",
+    "head_away_duration",
+    "image_width",
+    "image_height",
+    "hazard_class",
+    "hazard_confidence",
+    "center_x",
+    "center_y",
+    "bbox_width",
+    "bbox_height",
+    "bbox_area",
+    "primary_track_id",
+    "hazard_track_class",
+    "track_persistence_seconds",
+    "box_growth_per_second",
+    "lateral_toward_center_fw_per_s",
+    "trajectory_overlap",
+    "hazard_persistence",
+    "risk_level",
+    "raw_risk_level",
+    "raw_risk_score",
+    "smoothed_risk_score",
+    "risk_score",
+    "hazard_type",
+    "risk_reason",
+    "risk_factors",
+    "risk_gates",
+    "evidence_quality",
+    "alarm_recommended",
+    "alarm_triggered",
+    "event_type",
+    "transition",
+    "events_emitted",
+    "expected_behavior",
+    "expected_peak_levels",
+    "actual_risk_level",
+    "instance_peak_risk_level",
+    "expectation_met",
+    "notes"
+  ],
+  "requested_name_mapping": {
+    "object_id": "primary_track_id",
+    "approach_rate": "box_growth_per_second"
+  },
+  "provenance_policy": "Every row is SYNTHETIC: data_source=SYNTHETIC, observation_type=SYNTHETIC, timestamp_source=SYNTHETIC, gps_source=SYNTHETIC, location_source=SYNTHETIC_REFERENCE. Inputs (boxes, driver signals, time, location) are constructed by the generator; engine outputs are computed by the existing, unmodified tracker / driver / risk / event code FROM those synthetic inputs and are therefore synthetic too. Rows are written only to data/simulated/ and never to the real dataset (data/events/). parent_real_event_id only references an existing LOCAL_REAL event used as a statistical reference; it does not make the row an observation.",
+  "statement": "Synthetic data does not replace real observations. It stress-tests the existing risk/event logic with controlled feature-level scenarios; it says nothing about how often these situations occur on real roads or whether the engine is correct on real driving.",
+  "location_policy": "Synthetic GPS around a generic Indian urban-road reference point (28.6139, 77.209) with +-0.01 deg start perturbation per instance; gps_source=SYNTHETIC, location_source=SYNTHETIC_REFERENCE. Not a collection location. The real dataset keeps GPS null.",
+  "time_policy": "timestamp = seconds within the scenario instance at a fixed synthetic cadence; synthetic_datetime on a synthetic clock from base_datetime. timestamp_source=SYNTHETIC. Never used in LOCAL_REAL records.",
+  "real_reference": {
+    "path": "data/events/events.jsonl",
+    "available": true,
+    "sha256": "291a8212ddc895457575aa7979178bc594fab21529ff0faeb8da8e72eddb3636",
+    "events_used_as_reference_pool": 66,
+    "run_ids": [
+      "local_real_run_01"
+    ],
+    "access": "read-only",
+    "value_ranges": {
+      "vehicle": {
+        "area_fraction": {
+          "n": 12,
+          "min": 0.0224,
+          "median": 0.0814,
+          "max": 0.3475
+        },
+        "center_x_norm": {
+          "n": 12,
+          "min": 0.126,
+          "median": 0.3648,
+          "max": 0.9049
+        },
+        "hazard_confidence": {
+          "n": 12,
+          "min": 0.3959,
+          "median": 0.6977,
+          "max": 0.9286
+        },
+        "box_growth_per_second": {
+          "n": 12,
+          "min": 0.2196,
+          "median": 0.6407,
+          "max": 1.2912
+        },
+        "lateral_toward_center_fw_per_s": {
+          "n": 12,
+          "min": -0.2194,
+          "median": 0.0197,
+          "max": 0.0624
+        }
+      },
+      "vehicle_presence": {
+        "area_fraction": {
+          "n": 2,
+          "min": 0.5931,
+          "median": 0.6032,
+          "max": 0.6132
+        },
+        "center_x_norm": {
+          "n": 2,
+          "min": 0.518,
+          "median": 0.5257,
+          "max": 0.5335
+        },
+        "hazard_confidence": {
+          "n": 2,
+          "min": 0.8062,
+          "median": 0.8071,
+          "max": 0.808
+        },
+        "box_growth_per_second": {
+          "n": 2,
+          "min": -0.1205,
+          "median": -0.0544,
+          "max": 0.0117
+        },
+        "lateral_toward_center_fw_per_s": {
+          "n": 2,
+          "min": 0.0257,
+          "median": 0.0462,
+          "max": 0.0668
+        }
+      },
+      "person": {
+        "area_fraction": {
+          "n": 23,
+          "min": 0.0062,
+          "median": 0.0556,
+          "max": 0.2585
+        },
+        "center_x_norm": {
+          "n": 23,
+          "min": 0.1848,
+          "median": 0.5004,
+          "max": 0.6564
+        },
+        "hazard_confidence": {
+          "n": 23,
+          "min": 0.4214,
+          "median": 0.8157,
+          "max": 0.8994
+        },
+        "box_growth_per_second": {
+          "n": 23,
+          "min": -0.6238,
+          "median": 0.4257,
+          "max": 1.1625
+        },
+        "lateral_toward_center_fw_per_s": {
+          "n": 23,
+          "min": -0.1766,
+          "median": 0.0575,
+          "max": 0.1972
+        }
+      },
+      "person_distant": {
+        "area_fraction": {
+          "n": 5,
+          "min": 0.0016,
+          "median": 0.0028,
+          "max": 0.0045
+        },
+        "center_x_norm": {
+          "n": 5,
+          "min": 0.2237,
+          "median": 0.4543,
+          "max": 0.5528
+        },
+        "hazard_confidence": {
+          "n": 5,
+          "min": 0.3687,
+          "median": 0.5561,
+          "max": 0.6947
+        },
+        "box_growth_per_second": {
+          "n": 5,
+          "min": 0.2133,
+          "median": 0.2743,
+          "max": 0.6823
+        },
+        "lateral_toward_center_fw_per_s": {
+          "n": 5,
+          "min": -0.0793,
+          "median": 0.0216,
+          "max": 0.0633
+        }
+      },
+      "animal": {
+        "area_fraction": {
+          "n": 2,
+          "min": 0.0446,
+          "median": 0.0889,
+          "max": 0.1331
+        },
+        "center_x_norm": {
+          "n": 2,
+          "min": 0.434,
+          "median": 0.4752,
+          "max": 0.5164
+        },
+        "hazard_confidence": {
+          "n": 2,
+          "min": 0.4666,
+          "median": 0.673,
+          "max": 0.8795
+        },
+        "box_growth_per_second": {
+          "n": 2,
+          "min": -0.5747,
+          "median": 0.1451,
+          "max": 0.8648
+        },
+        "lateral_toward_center_fw_per_s": {
+          "n": 2,
+          "min": 0.0102,
+          "median": 0.0802,
+          "max": 0.1502
+        }
+      },
+      "drowsy": {
+        "drowsiness_score": {
+          "n": 11,
+          "min": 0.5,
+          "median": 0.7333,
+          "max": 0.9
+        }
+      }
+    }
+  },
+  "engine_configuration": "default RiskConfig / TrackingConfig / DriverConfig / EventConfig(evidence_mode=none); the engine was not modified or tuned for this dataset",
+  "config": {
+    "seed": 42,
+    "variants_per_scenario": 2,
+    "cadence_hz": 10.0,
+    "duration_range_seconds": [
+      5.0,
+      7.0
+    ],
+    "driver_preroll_seconds": 6.0,
+    "image_width": 1920,
+    "image_height": 1080,
+    "base_lat": 28.6139,
+    "base_lon": 77.209,
+    "location_jitter_deg": 0.01,
+    "trace_step_m_per_s": 8.0,
+    "base_datetime": "2026-01-15T09:00:00+05:30",
+    "instance_spacing_seconds": 120.0,
+    "run_id": "synthetic_scenarios_v1",
+    "real_events_path": "data/events/events.jsonl"
+  },
+  "validation": {
+    "instances": 24,
+    "expectation_met": 23,
+    "mismatches": [
+      {
+        "scenario_name": "escalating_hazard",
+        "variant": 2,
+        "session_id": "escalating_hazard__v02",
+        "rows": 50,
+        "duration_seconds": 5.0,
+        "expected_behavior": "Starts SAFE, then rises to HIGH (or CRITICAL) as the approach strengthens",
+        "expected_peak_levels": [
+          "HIGH",
+          "CRITICAL"
+        ],
+        "peak_level": "CAUTION",
+        "first_level": "SAFE",
+        "final_level": "CAUTION",
+        "level_counts": {
+          "SAFE": 20,
+          "CAUTION": 30
+        },
+        "alarm_recommended_steps": 0,
+        "expectation_met": false,
+        "mismatch": "peak CAUTION not in expected HIGH/CRITICAL",
+        "parent_real_event_id": null,
+        "parent_real_driver_event_id": null,
+        "events": {
+          "RISK_ESCALATED": 1
+        }
+      }
+    ]
+  },
+  "instances": [
+    {
+      "scenario_name": "attentive_static_vehicle",
+      "variant": 1,
+      "session_id": "attentive_static_vehicle__v01",
+      "rows": 51,
+      "duration_seconds": 5.1,
+      "expected_behavior": "SAFE or CAUTION (presence-only road user is capped; no driver factor)",
+      "expected_peak_levels": [
+        "SAFE",
+        "CAUTION"
+      ],
+      "peak_level": "CAUTION",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 8,
+        "CAUTION": 43
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000054",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "attentive_static_vehicle",
+      "variant": 2,
+      "session_id": "attentive_static_vehicle__v02",
+      "rows": 59,
+      "duration_seconds": 5.9,
+      "expected_behavior": "SAFE or CAUTION (presence-only road user is capped; no driver factor)",
+      "expected_peak_levels": [
+        "SAFE",
+        "CAUTION"
+      ],
+      "peak_level": "CAUTION",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 8,
+        "CAUTION": 51
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000054",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "attentive_approaching_vehicle",
+      "variant": 1,
+      "session_id": "attentive_approaching_vehicle__v01",
+      "rows": 70,
+      "duration_seconds": 7.0,
+      "expected_behavior": "CAUTION or HIGH (road-only; CRITICAL only for a very strong road hazard)",
+      "expected_peak_levels": [
+        "CAUTION",
+        "HIGH"
+      ],
+      "peak_level": "HIGH",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 31,
+        "HIGH": 34
+      },
+      "alarm_recommended_steps": 34,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000032",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 2,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "attentive_approaching_vehicle",
+      "variant": 2,
+      "session_id": "attentive_approaching_vehicle__v02",
+      "rows": 64,
+      "duration_seconds": 6.4,
+      "expected_behavior": "CAUTION or HIGH (road-only; CRITICAL only for a very strong road hazard)",
+      "expected_peak_levels": [
+        "CAUTION",
+        "HIGH"
+      ],
+      "peak_level": "CAUTION",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 59
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000037",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 1,
+        "PERSISTENT_HAZARD": 1
+      }
+    },
+    {
+      "scenario_name": "one_hand_approaching_vehicle",
+      "variant": 1,
+      "session_id": "one_hand_approaching_vehicle__v01",
+      "rows": 58,
+      "duration_seconds": 5.8,
+      "expected_behavior": "Same as the attentive approach: CAUTION or HIGH (ONE_HAND is not a driver factor)",
+      "expected_peak_levels": [
+        "CAUTION",
+        "HIGH"
+      ],
+      "peak_level": "HIGH",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 18,
+        "HIGH": 35
+      },
+      "alarm_recommended_steps": 35,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000021",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 2,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "one_hand_approaching_vehicle",
+      "variant": 2,
+      "session_id": "one_hand_approaching_vehicle__v02",
+      "rows": 59,
+      "duration_seconds": 5.9,
+      "expected_behavior": "Same as the attentive approach: CAUTION or HIGH (ONE_HAND is not a driver factor)",
+      "expected_peak_levels": [
+        "CAUTION",
+        "HIGH"
+      ],
+      "peak_level": "HIGH",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 23,
+        "HIGH": 31
+      },
+      "alarm_recommended_steps": 31,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000039",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 2,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "hands_off_approaching_vehicle",
+      "variant": 1,
+      "session_id": "hands_off_approaching_vehicle__v01",
+      "rows": 57,
+      "duration_seconds": 5.7,
+      "expected_behavior": "HIGH or CRITICAL once HANDS_OFF_WHEEL is inferred while the car approaches",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "CRITICAL",
+      "first_level": "SAFE",
+      "final_level": "CRITICAL",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 16,
+        "HIGH": 1,
+        "CRITICAL": 35
+      },
+      "alarm_recommended_steps": 36,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000032",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 3,
+        "DRIVER_STATE_CHANGE": 1,
+        "PERSISTENT_HAZARD": 1
+      }
+    },
+    {
+      "scenario_name": "hands_off_approaching_vehicle",
+      "variant": 2,
+      "session_id": "hands_off_approaching_vehicle__v02",
+      "rows": 54,
+      "duration_seconds": 5.4,
+      "expected_behavior": "HIGH or CRITICAL once HANDS_OFF_WHEEL is inferred while the car approaches",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "CRITICAL",
+      "first_level": "SAFE",
+      "final_level": "CRITICAL",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 18,
+        "HIGH": 3,
+        "CRITICAL": 28
+      },
+      "alarm_recommended_steps": 31,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000035",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 3,
+        "DRIVER_STATE_CHANGE": 2,
+        "PERSISTENT_HAZARD": 1
+      }
+    },
+    {
+      "scenario_name": "drowsy_approaching_vehicle",
+      "variant": 1,
+      "session_id": "drowsy_approaching_vehicle__v01",
+      "rows": 58,
+      "duration_seconds": 5.8,
+      "expected_behavior": "HIGH or CRITICAL (drowsiness HIGH/CRITICAL + approaching vehicle)",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "CRITICAL",
+      "first_level": "CAUTION",
+      "final_level": "CRITICAL",
+      "level_counts": {
+        "CAUTION": 6,
+        "HIGH": 1,
+        "CRITICAL": 51
+      },
+      "alarm_recommended_steps": 52,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000021",
+      "parent_real_driver_event_id": "event_000059",
+      "events": {
+        "RISK_ESCALATED": 3,
+        "PERSISTENT_HAZARD": 1
+      }
+    },
+    {
+      "scenario_name": "drowsy_approaching_vehicle",
+      "variant": 2,
+      "session_id": "drowsy_approaching_vehicle__v02",
+      "rows": 67,
+      "duration_seconds": 6.7,
+      "expected_behavior": "HIGH or CRITICAL (drowsiness HIGH/CRITICAL + approaching vehicle)",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "CRITICAL",
+      "first_level": "CAUTION",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "CAUTION": 10,
+        "HIGH": 3,
+        "CRITICAL": 54
+      },
+      "alarm_recommended_steps": 57,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000039",
+      "parent_real_driver_event_id": "event_000063",
+      "events": {
+        "RISK_ESCALATED": 3,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 2
+      }
+    },
+    {
+      "scenario_name": "attentive_pedestrian_crossing",
+      "variant": 1,
+      "session_id": "attentive_pedestrian_crossing__v01",
+      "rows": 57,
+      "duration_seconds": 5.7,
+      "expected_behavior": "CAUTION or HIGH (road-only pedestrian conflict)",
+      "expected_peak_levels": [
+        "CAUTION",
+        "HIGH"
+      ],
+      "peak_level": "CAUTION",
+      "first_level": "SAFE",
+      "final_level": "SAFE",
+      "level_counts": {
+        "SAFE": 12,
+        "CAUTION": 45
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000004",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 1,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "attentive_pedestrian_crossing",
+      "variant": 2,
+      "session_id": "attentive_pedestrian_crossing__v02",
+      "rows": 57,
+      "duration_seconds": 5.7,
+      "expected_behavior": "CAUTION or HIGH (road-only pedestrian conflict)",
+      "expected_peak_levels": [
+        "CAUTION",
+        "HIGH"
+      ],
+      "peak_level": "CAUTION",
+      "first_level": "SAFE",
+      "final_level": "SAFE",
+      "level_counts": {
+        "SAFE": 8,
+        "CAUTION": 49
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000038",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 1,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "distracted_pedestrian_crossing",
+      "variant": 1,
+      "session_id": "distracted_pedestrian_crossing__v01",
+      "rows": 66,
+      "duration_seconds": 6.6,
+      "expected_behavior": "HIGH or CRITICAL (head away + pedestrian conflict)",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "HIGH",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 28,
+        "HIGH": 33
+      },
+      "alarm_recommended_steps": 33,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000013",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 2,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "distracted_pedestrian_crossing",
+      "variant": 2,
+      "session_id": "distracted_pedestrian_crossing__v02",
+      "rows": 66,
+      "duration_seconds": 6.6,
+      "expected_behavior": "HIGH or CRITICAL (head away + pedestrian conflict)",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "HIGH",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 35,
+        "HIGH": 26
+      },
+      "alarm_recommended_steps": 26,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000042",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 2,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "distracted_dog_entering_path",
+      "variant": 1,
+      "session_id": "distracted_dog_entering_path__v01",
+      "rows": 68,
+      "duration_seconds": 6.8,
+      "expected_behavior": "HIGH or CRITICAL (head away + animal entering the central band)",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "HIGH",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 46,
+        "HIGH": 17
+      },
+      "alarm_recommended_steps": 17,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000005",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 2,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "distracted_dog_entering_path",
+      "variant": 2,
+      "session_id": "distracted_dog_entering_path__v02",
+      "rows": 62,
+      "duration_seconds": 6.2,
+      "expected_behavior": "HIGH or CRITICAL (head away + animal entering the central band)",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "HIGH",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 5,
+        "CAUTION": 40,
+        "HIGH": 17
+      },
+      "alarm_recommended_steps": 17,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000005",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 2,
+        "PERSISTENT_HAZARD": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "stationary_vehicle_false_positive",
+      "variant": 1,
+      "session_id": "stationary_vehicle_false_positive__v01",
+      "rows": 60,
+      "duration_seconds": 6.0,
+      "expected_behavior": "SAFE or CAUTION (no position evidence, so the HIGH gate should hold)",
+      "expected_peak_levels": [
+        "SAFE",
+        "CAUTION"
+      ],
+      "peak_level": "CAUTION",
+      "first_level": "SAFE",
+      "final_level": "SAFE",
+      "level_counts": {
+        "SAFE": 52,
+        "CAUTION": 8
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000052",
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 1,
+        "RISK_DEESCALATED": 1
+      }
+    },
+    {
+      "scenario_name": "stationary_vehicle_false_positive",
+      "variant": 2,
+      "session_id": "stationary_vehicle_false_positive__v02",
+      "rows": 52,
+      "duration_seconds": 5.2,
+      "expected_behavior": "SAFE or CAUTION (no position evidence, so the HIGH gate should hold)",
+      "expected_peak_levels": [
+        "SAFE",
+        "CAUTION"
+      ],
+      "peak_level": "SAFE",
+      "first_level": "SAFE",
+      "final_level": "SAFE",
+      "level_counts": {
+        "SAFE": 52
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000052",
+      "parent_real_driver_event_id": null,
+      "events": {}
+    },
+    {
+      "scenario_name": "distant_pedestrian_false_positive",
+      "variant": 1,
+      "session_id": "distant_pedestrian_false_positive__v01",
+      "rows": 68,
+      "duration_seconds": 6.8,
+      "expected_behavior": "SAFE or CAUTION (never HIGH)",
+      "expected_peak_levels": [
+        "SAFE",
+        "CAUTION"
+      ],
+      "peak_level": "SAFE",
+      "first_level": "SAFE",
+      "final_level": "SAFE",
+      "level_counts": {
+        "SAFE": 68
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000019",
+      "parent_real_driver_event_id": null,
+      "events": {}
+    },
+    {
+      "scenario_name": "distant_pedestrian_false_positive",
+      "variant": 2,
+      "session_id": "distant_pedestrian_false_positive__v02",
+      "rows": 53,
+      "duration_seconds": 5.3,
+      "expected_behavior": "SAFE or CAUTION (never HIGH)",
+      "expected_peak_levels": [
+        "SAFE",
+        "CAUTION"
+      ],
+      "peak_level": "SAFE",
+      "first_level": "SAFE",
+      "final_level": "SAFE",
+      "level_counts": {
+        "SAFE": 53
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000018",
+      "parent_real_driver_event_id": null,
+      "events": {}
+    },
+    {
+      "scenario_name": "persistent_low_risk_hazard",
+      "variant": 1,
+      "session_id": "persistent_low_risk_hazard__v01",
+      "rows": 64,
+      "duration_seconds": 6.4,
+      "expected_behavior": "SAFE or CAUTION (presence-only, capped)",
+      "expected_peak_levels": [
+        "SAFE",
+        "CAUTION"
+      ],
+      "peak_level": "SAFE",
+      "first_level": "SAFE",
+      "final_level": "SAFE",
+      "level_counts": {
+        "SAFE": 64
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000003",
+      "parent_real_driver_event_id": null,
+      "events": {}
+    },
+    {
+      "scenario_name": "persistent_low_risk_hazard",
+      "variant": 2,
+      "session_id": "persistent_low_risk_hazard__v02",
+      "rows": 60,
+      "duration_seconds": 6.0,
+      "expected_behavior": "SAFE or CAUTION (presence-only, capped)",
+      "expected_peak_levels": [
+        "SAFE",
+        "CAUTION"
+      ],
+      "peak_level": "SAFE",
+      "first_level": "SAFE",
+      "final_level": "SAFE",
+      "level_counts": {
+        "SAFE": 60
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": "event_000004",
+      "parent_real_driver_event_id": null,
+      "events": {}
+    },
+    {
+      "scenario_name": "escalating_hazard",
+      "variant": 1,
+      "session_id": "escalating_hazard__v01",
+      "rows": 61,
+      "duration_seconds": 6.1,
+      "expected_behavior": "Starts SAFE, then rises to HIGH (or CRITICAL) as the approach strengthens",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "HIGH",
+      "first_level": "SAFE",
+      "final_level": "HIGH",
+      "level_counts": {
+        "SAFE": 20,
+        "CAUTION": 36,
+        "HIGH": 5
+      },
+      "alarm_recommended_steps": 5,
+      "expectation_met": true,
+      "mismatch": null,
+      "parent_real_event_id": null,
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 2,
+        "PERSISTENT_HAZARD": 1
+      }
+    },
+    {
+      "scenario_name": "escalating_hazard",
+      "variant": 2,
+      "session_id": "escalating_hazard__v02",
+      "rows": 50,
+      "duration_seconds": 5.0,
+      "expected_behavior": "Starts SAFE, then rises to HIGH (or CRITICAL) as the approach strengthens",
+      "expected_peak_levels": [
+        "HIGH",
+        "CRITICAL"
+      ],
+      "peak_level": "CAUTION",
+      "first_level": "SAFE",
+      "final_level": "CAUTION",
+      "level_counts": {
+        "SAFE": 20,
+        "CAUTION": 30
+      },
+      "alarm_recommended_steps": 0,
+      "expectation_met": false,
+      "mismatch": "peak CAUTION not in expected HIGH/CRITICAL",
+      "parent_real_event_id": null,
+      "parent_real_driver_event_id": null,
+      "events": {
+        "RISK_ESCALATED": 1
+      }
+    }
+  ],
+  "files": {
+    "scenarios.jsonl": 1441,
+    "scenarios.parquet": 1441,
+    "schema.json": "sim-1.0"
+  }
+}

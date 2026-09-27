@@ -1,0 +1,7 @@
+# Install with:  pip install --no-deps -r requirements-nodeps.txt   (after requirements.txt)
+#
+# Ultralytics hard-requires opencv-python, which must NOT be installed next to
+# opencv-contrib-python (MediaPipe's OpenCV): both ship the same cv2 files, and removing either
+# later breaks cv2. --no-deps skips that one dependency; the rest are in requirements.txt.
+# `pip check` will then report "ultralytics requires opencv-python" - expected and harmless.
+ultralytics==8.4.163            # pretrained YOLO26n road-object detector (CPU); version tested here

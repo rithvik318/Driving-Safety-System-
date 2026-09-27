@@ -1,0 +1,276 @@
+{
+  "num_samples": 27,
+  "accuracy": 1.0,
+  "macro_precision": 1.0,
+  "macro_recall": 1.0,
+  "macro_f1": 1.0,
+  "per_class": {
+    "both_hands_on_steering": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 4
+    },
+    "one_hand_on_steering": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 14
+    },
+    "no_hands": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9
+    }
+  },
+  "confusion_matrix": [
+    [
+      4,
+      0,
+      0
+    ],
+    [
+      0,
+      14,
+      0
+    ],
+    [
+      0,
+      0,
+      9
+    ]
+  ],
+  "zero_division": [],
+  "threshold_analysis": {
+    "threshold": 0.6,
+    "reported_unknown": 0,
+    "coverage": 1.0,
+    "accuracy_on_accepted": 1.0
+  },
+  "predictions": [
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/both_hands_on_steering/Copy of Normal_Driving-vid_7-frame_0502.jpg",
+      "true": "both_hands_on_steering",
+      "predicted": "both_hands_on_steering",
+      "confidence": 0.9997,
+      "reported_state": "BOTH_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/both_hands_on_steering/Copy of Normal_Driving-vid_7-frame_0528.jpg",
+      "true": "both_hands_on_steering",
+      "predicted": "both_hands_on_steering",
+      "confidence": 0.9998,
+      "reported_state": "BOTH_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/both_hands_on_steering/Copy of Normal_Driving-vid_7-frame_0538.jpg",
+      "true": "both_hands_on_steering",
+      "predicted": "both_hands_on_steering",
+      "confidence": 1.0,
+      "reported_state": "BOTH_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/both_hands_on_steering/Copy of Passenegr_Interaction-vid_5-frame_0912.jpg",
+      "true": "both_hands_on_steering",
+      "predicted": "both_hands_on_steering",
+      "confidence": 0.9999,
+      "reported_state": "BOTH_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of Rubbernecking-vid_7-rubbernecking-vid_7-frame_0956.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9978,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of Rubbernecking-vid_7-rubbernecking-vid_7-frame_0963.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9995,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of Using_Electronics_Items-vid_7-frame_0542.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9993,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of Using_Electronics_Items-vid_7-frame_0551.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9978,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of Using_Electronics_Items-vid_7-frame_0556.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9629,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of Using_Electronics_Items-vid_7-frame_1144.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9998,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of Using_Electronics_Items-vid_7-frame_1158.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9995,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of Using_Electronics_Items-vid_7-frame_1162.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9902,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of jumon-vid_0-frame_0730.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9996,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of jumon-vid_0-frame_0731.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9996,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of jumon-vid_0-frame_0800.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9999,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of jumon-vid_0-frame_0808.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9999,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of jumon-vid_0-frame_0817.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9995,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/one_hand_on_steering/Copy of jumon-vid_0-frame_0821.jpg",
+      "true": "one_hand_on_steering",
+      "predicted": "one_hand_on_steering",
+      "confidence": 0.9996,
+      "reported_state": "ONE_HAND",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of Using_Electronics_Items-vid_4-frame_1024.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 1.0,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of Using_Electronics_Items-vid_4-frame_1026.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 1.0,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of Using_Electronics_Items-vid_4-frame_1037.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 0.9984,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of Using_Electronics_Items-vid_4-frame_1040.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 0.9983,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of Using_Electronics_Items-vid_4-frame_1419.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 0.9998,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of Using_Electronics_Items-vid_4-frame_1428.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 1.0,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of frame_0230.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 0.9999,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of frame_0235.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 0.9999,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    },
+    {
+      "path": "drivercamera-20260926T193339Z-1-001/drivercamera/no_hands/Copy of frame_0240.jpg",
+      "true": "no_hands",
+      "predicted": "no_hands",
+      "confidence": 1.0,
+      "reported_state": "NO_HANDS",
+      "correct": true
+    }
+  ],
+  "evaluated_at": "2026-09-26T21:41:00+00:00",
+  "split": "test",
+  "checkpoint": "hand_state_best.pt",
+  "checkpoint_epoch": 25,
+  "device": "cpu",
+  "dataset_total_usable_images": 188,
+  "note": "Small dataset: 188 unique usable images; test set has 27 images. Not a production accuracy claim."
+}

@@ -1,0 +1,65 @@
+scope,category,key,value
+REAL,total,events,66
+REAL,total,sessions,16
+REAL,events_by_type,RISK_ESCALATED,32
+REAL,events_by_type,RISK_DEESCALATED,18
+REAL,events_by_type,PERSISTENT_HAZARD,9
+REAL,events_by_type,DRIVER_STATE_CHANGE,7
+REAL,events_by_camera,front,54
+REAL,events_by_camera,driver,12
+REAL,events_by_risk_level,SAFE,9
+REAL,events_by_risk_level,CAUTION,34
+REAL,events_by_risk_level,HIGH,16
+REAL,events_by_risk_level,CRITICAL,0
+REAL,events_by_hazard_type,PEDESTRIAN_CONFLICT,28
+REAL,events_by_hazard_type,APPROACHING_VEHICLE,19
+REAL,events_by_hazard_type,not recorded,7
+REAL,events_by_hazard_type,NONE,4
+REAL,events_by_hazard_type,DRIVER_DROWSINESS,4
+REAL,events_by_hazard_type,ANIMAL_HAZARD,2
+REAL,events_by_hazard_type,ROAD_USER_PRESENT,2
+REAL,risk_transitions,SAFE->CAUTION,21
+REAL,risk_transitions,CAUTION->HIGH,11
+REAL,risk_transitions,HIGH->CAUTION,9
+REAL,risk_transitions,CAUTION->SAFE,9
+REAL,alarm_recommended,false,43
+REAL,alarm_recommended,true,16
+REAL,alarm_recommended,not recorded,7
+REAL,persistent_hazards,count,9
+REAL,driver_state_events,drowsiness_level: HIGH->CRITICAL,3
+REAL,driver_state_events,drowsiness_level: CRITICAL->HIGH,2
+REAL,driver_state_events,hand_state: ONE_HAND->NO_HANDS,1
+REAL,driver_state_events,hand_state: NO_HANDS->ONE_HAND,1
+REAL,smoothed_risk_score,n,59
+REAL,smoothed_risk_score,mean,38.634
+REAL,smoothed_risk_score,median,37.63
+REAL,smoothed_risk_score,max,60.0
+REAL,smoothed_risk_score,min,18.859
+REAL,raw_risk_score,n,59
+REAL,raw_risk_score,mean,36.321
+REAL,raw_risk_score,median,34.928
+REAL,raw_risk_score,max,60.0
+REAL,raw_risk_score,min,0.0
+REAL,elevated_risk_episodes,count,21
+REAL,elevated_risk_episodes,closed,9
+REAL,elevated_risk_episodes,open_at_end_of_clip,12
+REAL,elevated_risk_episode_seconds,n,9
+REAL,elevated_risk_episode_seconds,mean,2.099
+REAL,elevated_risk_episode_seconds,median,0.8
+REAL,elevated_risk_episode_seconds,max,10.695
+REAL,elevated_risk_episode_seconds,min,0.2
+REAL,pattern_events,Pedestrian hazards,21
+REAL,pattern_events,Approaching-vehicle hazards,12
+REAL,pattern_events,Animal hazards,2
+REAL,pattern_events,Driver-state changes,7
+REAL,pattern_events,Risk escalations,32
+REAL,pattern_events,Escalations to HIGH or CRITICAL,11
+REAL,gps,real_gps_points,0
+REAL,recommendation_events,pedestrian,21
+REAL,recommendation_events,vehicle,12
+REAL,recommendation_events,drowsiness,9
+REAL,recommendation_events,animal,2
+REAL,recommendation_events,hands_off,1
+REAL,recommendation_events,deescalation,18
+REAL,recommendation_events,road_user_present,2
+REAL,recommendation_events,hand_info,1
