@@ -8,7 +8,6 @@ This is an early-stage prototype. These are engineering limitations, stated so r
 - **No synchronized driver + front recording.** Real events are road-only or driver-only. The combined driver + road hazard path (the only real route to CRITICAL besides a very strong road hazard) is exercised only with labelled synthetic input.
 - **No real GPS.** Every real event has null coordinates and `gps_source = UNAVAILABLE`. There is no geographic hotspot analysis. Synthetic GPS exists only in the synthetic dataset and is labelled as such.
 - **No ground truth.** There are no collision, near-miss, bounding-box or track labels. Event counts describe rule behaviour, not safety outcomes or accuracy.
-- **Undocumented origin of some hand-state frames.** Some image file names indicate frames extracted from source videos (e.g. `Normal_Driving-vid_7-frame_…`). Those source videos and their capture details are not part of the dataset.
 
 ## Driver perception
 
